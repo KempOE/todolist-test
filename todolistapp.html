@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<head>
+    <title>To-do-list App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        *{
+    margin:0;
+    padding:0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+    }
+    .container{
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg,#153677,#4e085f);
+    padding: 10px;
+    }
+    .todoapp{
+        width: 100%;
+        max-width: 540px;
+        background: #fff;
+        margin: auto;
+        padding: 40px 20px 70px;
+        border-radius: 10px;
+        position:absolute;
+        top:50%;
+        left:50%;
+        transform: translate(-50%,-50%);
+    }
+    .todoapp h2{
+        color:#002765;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .todoapp h2 img{
+        width: 30px;
+        margin-left: 10px;
+    }
+    .row{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #ee8800;
+        border-radius:30px;
+        padding-left: 20px;
+        margin-bottom: 25px;
+
+    }
+    input{
+        flex:1;
+        border:none;
+        outline:none;
+        color:#fff;
+        background: transparent;
+        padding: 10px;
+        font-weight: 14px;
+    }
+    button{
+        border:none;
+        outline:none;
+        padding:16px 50px;
+        background: #ff5400;
+        color:#fff;
+        font-size:16px;
+        cursor:pointer;
+        border-radius: 40px;
+    }
+    ul li{
+        list-style: none;
+        font-size: 1em;
+        padding:12px 8px 12px 50px;
+        user-select: none;
+        cursor: pointer;
+        position: relative;
+    }
+    ul li::before{
+        content:"";
+        position: absolute;
+        height: 28px;
+        width: 28px;
+        border-radius: 50%;
+        background-image: url(images/unchecked.png);
+        background-size:cover;
+        background-position: center;
+        top:12px;
+        left:8px;
+    }
+    ul li.checked{
+        color: #555;
+        text-decoration: line-through;
+    }
+    ul li.checked::before{
+        background-image: url(images/checked.png);
+    }
+    span:hover{
+        background: #edeeff;
+    }
+    ul li span{
+        position: absolute;
+        right:0;
+        top:5px;
+        width: 40px;
+        height: 40px;
+        font-size:22px;
+        color:#555;
+        line-height: 40px;
+        text-align: center;
+        border-radius: 50%;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="todoapp">
+            <h2>To Do List<img src="D:\JS Test\To-do-list-app\images\icon.png"></h2>
+            <div class="row">
+                <input type="text" id="inputbox" placeholder="Add your task">
+                <button onclick="addtask()">Add</button>
+            </div>
+            <ul id="listcontainer">
+            </ul>
+        </div>  
+    </div>
+    <script>
+        const inputbox=document.getElementById("inputbox");
+        const list=document.getElementById("listcontainer");
+
+        function addtask(){
+            if(inputbox.value === ""){
+                alert("you must write someting");
+            }else{
+                let li=document.createElement("li");
+                li.innerHTML = inputbox.value;
+                list.appendChild(li);
+                let span=document.createElement("span");
+                span.innerHTML="\u00df";
+                li.appendChild(span);
+            }
+            inputbox.value="";
+            savedata();
+        }
+
+        list.addEventListener("click",function(e){
+            if(e.target.tagName === "LI"){
+                e.target.classList.toggle("checked");
+                savedata();
+            }else if(e.target.tagName === "SPAN"){
+                e.target.parentElement.remove();
+                savedata();
+            }
+        },false);
+
+        function savedata(){
+            localStorage.setItem("data",list.innerHTML);
+        }
+        function showtask(){
+            list.innerHTML=localStorage.getItem("data");
+        }
+        showtask();
+    </script>
+</body>
+</html>
